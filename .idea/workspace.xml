@@ -4,7 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="72907816-54ef-432d-93e5-98f1159e8541" name="Changes" comment="updated auth to resume with existing token">
+    <list default="true" id="72907816-54ef-432d-93e5-98f1159e8541" name="Changes" comment="updated .idea things">
+      <change afterPath="$PROJECT_DIR$/src/main/java/auth/AccessRefreshToken.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/auth/AccessRefreshTokenProvider.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/auth/RefreshTokenStore.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/auth/YggdrasilAuthentication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/client/RandomType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/model/RandomBlock.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/model/RunStart.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/model/Timebox.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/model/TokenResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/run/GameRandom.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/run/RandomSource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/run/Run.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/run/SavedRandom.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/server/RunServerClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/server/ServerClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/server/ServerInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/RunManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/RunManager.java" afterDir="false" />
     </list>
@@ -21,6 +37,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -40,9 +57,17 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_directory_selection": "/home/leyla/Documents/code/mcsr/serversiderng-common/src/main/java/run"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="run" />
+      <recent name="auth" />
+      <recent name="auth.yggdrasil" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -66,12 +91,28 @@
       <option name="project" value="LOCAL" />
       <updated>1682284945087</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="removed auth factory">
+      <created>1682285173288</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1682285173288</updated>
+    </task>
+    <task id="LOCAL-00004" summary="updated .idea things">
+      <created>1682285195326</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1682285195326</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="created basic api" />
     <MESSAGE value="updated auth to resume with existing token" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated auth to resume with existing token" />
+    <MESSAGE value="removed auth factory" />
+    <MESSAGE value="updated .idea things" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated .idea things" />
   </component>
 </project>
