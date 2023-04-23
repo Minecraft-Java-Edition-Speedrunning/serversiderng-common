@@ -28,9 +28,9 @@ public class AccessRefreshTokenProvider {
 
     public AccessRefreshTokenProvider(ServerInterface serverClient, RefreshTokenStore refreshTokenStore, YggdrasilAuthentication authentication) {
         this(
-                serverClient,
-                refreshTokenStore,
-                (AccessRefreshTokenProvider self) -> self.authenticateYggdrasil(authentication)
+            serverClient,
+            refreshTokenStore,
+            (AccessRefreshTokenProvider self) -> self.authenticateYggdrasil(authentication)
         );
     }
 
