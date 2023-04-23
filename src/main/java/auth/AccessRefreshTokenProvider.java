@@ -50,12 +50,12 @@ public class AccessRefreshTokenProvider {
 
     private void authenticateYggdrasil(YggdrasilAuthentication authentication) {
         AccessRefreshToken accessRefreshToken = serverClient.authenticateYggdrasil(
-                authentication.uuid(),
-                authentication.challenge(),
-                authentication.response(),
-                authentication.publicKey(),
-                authentication.signature(),
-                authentication.instant()
+            authentication.uuid(),
+            authentication.challenge(),
+            authentication.response(),
+            authentication.publicKey(),
+            authentication.signature(),
+            authentication.instant()
         );
         this.applyTokens(accessRefreshToken);
     }
@@ -76,9 +76,9 @@ public class AccessRefreshTokenProvider {
             scheduledRefresh.cancel(false);
         }
         scheduledRefresh = scheduler.schedule(
-                this::refresh,
-                Math.max(0, Duration.between(this.expiresAt, Instant.now()).toMillis() - PREFETCH_MILLISECONDS),
-                TimeUnit.MILLISECONDS
+            this::refresh,
+            Math.max(0, Duration.between(this.expiresAt, Instant.now()).toMillis() - PREFETCH_MILLISECONDS),
+            TimeUnit.MILLISECONDS
         );
     }
 
