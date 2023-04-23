@@ -2,7 +2,7 @@ package server;
 
 
 import auth.AccessRefreshTokenProvider;
-import auth.RefreshTokenStore;
+import client.RefreshTokenStore;
 import auth.YggdrasilAuthentication;
 import model.RandomBlock;
 import model.RunStart;

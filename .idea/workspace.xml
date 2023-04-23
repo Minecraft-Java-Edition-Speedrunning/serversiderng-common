@@ -4,25 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="72907816-54ef-432d-93e5-98f1159e8541" name="Changes" comment="updated .idea things">
-      <change afterPath="$PROJECT_DIR$/src/main/java/auth/AccessRefreshToken.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/auth/AccessRefreshTokenProvider.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/auth/RefreshTokenStore.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/auth/YggdrasilAuthentication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/client/RandomType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/model/RandomBlock.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/model/RunStart.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/model/Timebox.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/model/TokenResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/run/GameRandom.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/run/RandomSource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/run/Run.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/run/SavedRandom.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/server/RunServerClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/server/ServerClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/server/ServerInterface.java" afterDir="false" />
+    <list default="true" id="72907816-54ef-432d-93e5-98f1159e8541" name="Changes" comment="split project into many files">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/RunManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/RunManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/RunManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/RunManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/auth/AccessRefreshTokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/auth/AccessRefreshTokenProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/auth/RefreshTokenStore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/client/RefreshTokenStore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/ServerClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/ServerClient.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,8 +24,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -105,7 +92,14 @@
       <option name="project" value="LOCAL" />
       <updated>1682285195326</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="split project into many files">
+      <created>1682286565836</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1682286565836</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -113,6 +107,7 @@
     <MESSAGE value="updated auth to resume with existing token" />
     <MESSAGE value="removed auth factory" />
     <MESSAGE value="updated .idea things" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated .idea things" />
+    <MESSAGE value="split project into many files" />
+    <option name="LAST_COMMIT_MESSAGE" value="split project into many files" />
   </component>
 </project>

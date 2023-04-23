@@ -1,4 +1,4 @@
-package auth;
+package client;
 
 public interface RefreshTokenStore {
     void saveRefreshToken(String refreshToken);

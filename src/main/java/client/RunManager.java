@@ -1,6 +1,6 @@
-import auth.RefreshTokenStore;
+package client;
+
 import auth.YggdrasilAuthentication;
-import client.RandomType;
 import model.RunStart;
 import model.TokenResponse;
 import run.Run;

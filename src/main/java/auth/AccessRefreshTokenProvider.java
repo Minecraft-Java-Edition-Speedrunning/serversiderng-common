@@ -1,5 +1,6 @@
 package auth;
 
+import client.RefreshTokenStore;
 import server.ServerInterface;
 
 import java.time.LocalDateTime;
