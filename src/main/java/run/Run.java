@@ -1,5 +1,6 @@
 package run;
 
+import client.EventTokenLogger;
 import client.RandomType;
 import model.RandomBlock;
 import model.RunStart;
@@ -17,22 +18,26 @@ import java.util.Random;
 public class Run<T extends RandomType> {
     private final RunStart runStart;
     private RunServerClient serverClient;
+    private EventTokenLogger eventTokenLogger;
+    private String runKey;
     private RandomSource<T> activeSource;
 
-    public Run(ServerClient serverClient, String seed) {
+    public Run(ServerClient serverClient, EventTokenLogger eventTokenLogger, String seed, String runKey) {
         TokenResponse<RunStart> runStart = serverClient.startRun(seed);
-        // TODO: log runStart somewhere
+        eventTokenLogger.startRun(runKey, runStart);
         this.runStart = runStart.data();
-        initRun(serverClient, runStart.token(), null);
+        initRun(serverClient, eventTokenLogger, runStart.token(), null, runKey);
     }
 
-    public Run(ServerClient serverClient, TokenResponse<RunStart> runStart, SavedRandom<T> savedRandom) {
+    public Run(ServerClient serverClient, EventTokenLogger eventTokenLogger, TokenResponse<RunStart> runStart, SavedRandom<T> savedRandom, String runKey) {
         this.runStart = runStart.data();
-        initRun(serverClient, runStart.token(), savedRandom);
+        initRun(serverClient, eventTokenLogger, runStart.token(), savedRandom, runKey);
     }
 
-    private void initRun(ServerClient serverClient, String runToken, SavedRandom<T> savedRandom) {
+    private void initRun(ServerClient serverClient, EventTokenLogger eventTokenLogger, String runToken, SavedRandom<T> savedRandom, String runKey) {
         this.serverClient = new RunServerClient(serverClient, runToken);
+        this.eventTokenLogger = eventTokenLogger;
+        this.runKey = runKey;
         if (savedRandom != null) {
             this.activeSource = new RandomSource<>(savedRandom.block(), savedRandom.calls());
         }
@@ -46,7 +51,7 @@ public class Run<T extends RandomType> {
         Long activeBlock = this.getActiveBlockIndex();
         while (!Objects.equals(this.activeSource.block.block(), activeBlock)) {
             TokenResponse<RandomBlock> block = this.serverClient.getRandom(activeBlock);
-            // TODO: log block somewhere
+            this.eventTokenLogger.randomBlock(runKey, block);
             this.activeSource = new RandomSource<>(block.data(), new HashMap<>());
             activeBlock = this.getActiveBlockIndex();
         }
@@ -58,9 +63,7 @@ public class Run<T extends RandomType> {
         return randomSource.getRandom(eventType);
     }
 
-    public void timebox(String hash, String cause) {
-        TokenResponse<Timebox> timebox = this.serverClient.timeboxRun(hash, cause);
-        // TODO: log timebox somewhere
+    public TokenResponse<Timebox> timebox(String hash, String cause) {
+        return this.serverClient.timeboxRun(hash, cause);
     }
-
 }
