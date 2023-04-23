@@ -8,33 +8,14 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-interface YggdrasilAuthenticator {
-
-}
-
-record YggdrasilAuthentication(String srcApiKey, YggdrasilAuthenticator yggdrasilAuthenticator, String mcsrApiKey) {}
-
-class AuthenticationFactory {
-    private String srcApiKey;
-    private YggdrasilAuthenticator yggdrasilAuthenticator;
-    private String mcsrApiKey;
-
-    public void setSrcApiKey(String srcApiKey) {
-        this.srcApiKey = srcApiKey;
-    }
-
-    public void setYggdrasilAuthenticator(YggdrasilAuthenticator yggdrasilAuthenticator) {
-        this.yggdrasilAuthenticator = yggdrasilAuthenticator;
-    }
-
-    public void setMcsrApiKey(String mcsrApiKey) {
-        this.mcsrApiKey = mcsrApiKey;
-    }
-
-    public YggdrasilAuthentication build() {
-        return new YggdrasilAuthentication(srcApiKey, yggdrasilAuthenticator, mcsrApiKey);
-    }
-}
+record YggdrasilAuthentication(
+    String uuid,
+    String challenge,
+    String response,
+    String publicKey,
+    String signature,
+    String instant
+) {}
 
 record AccessRefreshToken (
     String refreshToken,
@@ -72,10 +53,13 @@ class AccessRefreshTokenProvider {
     }
 
     private void authenticateYggdrasil(YggdrasilAuthentication authentication) {
-        AccessRefreshToken accessRefreshToken = serverClient.authenticate(
-                authentication.srcApiKey(),
-                authentication.yggdrasilAuthenticator(),
-                authentication.mcsrApiKey()
+        AccessRefreshToken accessRefreshToken = serverClient.authenticateYggdrasil(
+            authentication.uuid(),
+            authentication.challenge(),
+            authentication.response(),
+            authentication.publicKey(),
+            authentication.signature(),
+            authentication.instant()
         );
         this.applyTokens(accessRefreshToken);
     }
@@ -135,7 +119,14 @@ record Timebox (
 ) {}
 
 interface ServerInterface {
-    AccessRefreshToken authenticate(String srcApiKey, YggdrasilAuthenticator yggdrasilAuthenticator, String mcsrApiKey);
+    AccessRefreshToken authenticateYggdrasil(
+        String uuid,
+        String challenge,
+        String response,
+        String publicKey,
+        String signature,
+        String instant
+    );
     AccessRefreshToken refresh(String refreshToken);
     TokenResponse<RunStart> startRun(
         String authorization,
