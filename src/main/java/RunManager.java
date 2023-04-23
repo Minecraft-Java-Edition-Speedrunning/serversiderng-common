@@ -5,13 +5,14 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 interface YggdrasilAuthenticator {
 
 }
 
-record Authentication(String srcApiKey, YggdrasilAuthenticator yggdrasilAuthenticator, String mcsrApiKey) {}
+record YggdrasilAuthentication(String srcApiKey, YggdrasilAuthenticator yggdrasilAuthenticator, String mcsrApiKey) {}
 
 class AuthenticationFactory {
     private String srcApiKey;
@@ -30,8 +31,8 @@ class AuthenticationFactory {
         this.mcsrApiKey = mcsrApiKey;
     }
 
-    public Authentication build() {
-        return new Authentication(srcApiKey, yggdrasilAuthenticator, mcsrApiKey);
+    public YggdrasilAuthentication build() {
+        return new YggdrasilAuthentication(srcApiKey, yggdrasilAuthenticator, mcsrApiKey);
     }
 }
 
@@ -43,19 +44,40 @@ record AccessRefreshToken (
 
 class AccessRefreshTokenProvider {
     private final ServerInterface serverClient;
+    private final RefreshTokenStore refreshTokenStore;
     private String refreshToken;
     private String accessToken;
     private LocalDateTime expiresAt;
 
-    AccessRefreshTokenProvider(ServerInterface serverClient, Authentication authentication) {
+    public AccessRefreshTokenProvider(ServerInterface serverClient, RefreshTokenStore refreshTokenStore, YggdrasilAuthentication authentication) {
+        this(
+            serverClient,
+            refreshTokenStore,
+            (AccessRefreshTokenProvider self) -> self.authenticateYggdrasil(authentication)
+        );
+    }
+
+    private AccessRefreshTokenProvider(ServerInterface serverClient, RefreshTokenStore refreshTokenStore, Consumer<AccessRefreshTokenProvider> authenticate) {
         this.serverClient = serverClient;
+        this.refreshTokenStore = refreshTokenStore;
+        this.refreshToken = refreshTokenStore.getRefreshToken();
+        if (this.refreshToken != null) {
+            refresh();
+            // TODO: error handling if refresh token is invalidated at this point
+//            authenticate.accept(this);
+        }
+        else {
+            authenticate.accept(this);
+        }
+    }
+
+    private void authenticateYggdrasil(YggdrasilAuthentication authentication) {
         AccessRefreshToken accessRefreshToken = serverClient.authenticate(
                 authentication.srcApiKey(),
                 authentication.yggdrasilAuthenticator(),
                 authentication.mcsrApiKey()
         );
         this.applyTokens(accessRefreshToken);
-        // TODO: auto refresh accessToken
     }
 
     private void refresh() {
@@ -68,6 +90,7 @@ class AccessRefreshTokenProvider {
         this.refreshToken = tokens.refreshToken();
         this.accessToken = tokens.accessToken();
         this.expiresAt = tokens.expiresAt();
+        this.refreshTokenStore.saveRefreshToken(this.refreshToken);
         // TODO: schedule auto refresh
     }
 
@@ -132,13 +155,13 @@ interface ServerInterface {
 }
 
 class ServerClient {
-    ServerInterface serverInterface;
+    private final ServerInterface serverInterface;
     private final AccessRefreshTokenProvider accessRefreshToken;
 
-    public ServerClient(Authentication authentication) {
+    public ServerClient(RefreshTokenStore refreshTokenStore, YggdrasilAuthentication authentication) {
         // TODO: figure out how serverClient is getting initiated
         serverInterface = null;
-        this.accessRefreshToken = new AccessRefreshTokenProvider(serverInterface, authentication);
+        this.accessRefreshToken = new AccessRefreshTokenProvider(serverInterface, refreshTokenStore, authentication);
     }
 
     private String getAuthorisation() {
@@ -272,11 +295,16 @@ class Run<T extends RandomType> {
 
 }
 
+interface RefreshTokenStore {
+    void saveRefreshToken(String refreshToken);
+    String getRefreshToken();
+}
+
 public class RunManager<T extends RandomType> {
     private final ServerClient serverClient;
 
-    public RunManager(Authentication authentication) {
-        this.serverClient = new ServerClient(authentication);
+    public RunManager(RefreshTokenStore refreshTokenStore, YggdrasilAuthentication authentication) {
+        this.serverClient = new ServerClient(refreshTokenStore, authentication);
     }
 
     Run<T> startRun(String seed) {
