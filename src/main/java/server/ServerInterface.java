@@ -8,27 +8,28 @@ import model.TokenResponse;
 
 public interface ServerInterface {
     AccessRefreshToken authenticateYggdrasil(
-            String uuid,
-            String challenge,
-            String response,
-            String publicKey,
-            String signature,
-            String instant
+        String uuid,
+        String publicKey,
+        Long publicKeyExpiration,
+        String publicKeySignature,
+        String challenge,
+        Long challengeExpiration,
+        String challengeSignature
     );
     AccessRefreshToken refresh(String refreshToken);
     TokenResponse<RunStart> startRun(
-            String authorization,
-            String seed
+        String authorization,
+        String seed
     );
     TokenResponse<RandomBlock> getRandom(
-            String authorization,
-            String runToken,
-            Long block
+        String authorization,
+        String runToken,
+        Long block
     );
     TokenResponse<Timebox> timeboxRun(
-            String authorization,
-            String runToken,
-            String hash,
-            String cause
+        String authorization,
+        String runToken,
+        String hash,
+        String cause
     );
 }

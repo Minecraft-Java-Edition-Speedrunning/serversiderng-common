@@ -1,6 +1,6 @@
 package auth;
 
-public record YggdrasilAuthentication (
+record YggdrasilAuthentication (
         String uuid,
         String publicKey,
         Long publicKeyExpiration,
