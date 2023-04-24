@@ -1,6 +1,4 @@
-package client;
-
-import auth.YggdrasilAuthentication;
+package auth;
 
 import java.nio.ByteBuffer;
 import java.security.*;
@@ -18,7 +16,6 @@ record YggdrasilKeyPair (
 ) {}
 
 public class YggdrasilAuthenticationFactory {
-
     UUID uuid;
     YggdrasilKeyPair keyPair;
 
@@ -68,13 +65,13 @@ public class YggdrasilAuthenticationFactory {
             String challengeSignature = Base64.getEncoder().encodeToString(challengeSignatureBytes);
 
             return new YggdrasilAuthentication(
-                    uuid.toString(),
-                    keyPair.publicKey(),
-                    keyPair.expiresAt(),
-                    keyPair.publicKeySignature(),
-                    challengeString,
-                    challengeExpiration,
-                    challengeSignature
+                uuid.toString(),
+                keyPair.publicKey(),
+                keyPair.expiresAt(),
+                keyPair.publicKeySignature(),
+                challengeString,
+                challengeExpiration,
+                challengeSignature
             );
         } catch (InvalidKeySpecException | NoSuchAlgorithmException | SignatureException | InvalidKeyException e) {
             throw new RuntimeException(e);

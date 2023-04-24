@@ -50,13 +50,13 @@ public class AccessRefreshTokenProvider {
 
     private void authenticateYggdrasil(YggdrasilAuthentication authentication) {
         AccessRefreshToken accessRefreshToken = serverClient.authenticateYggdrasil(
-            authentication.uuid(),
-            authentication.publicKey(),
-            authentication.publicKeyExpiration(),
-            authentication.publicKeySignature(),
-            authentication.challenge(),
-            authentication.challengeExpiration(),
-            authentication.challengeSignature()
+            authentication.uuid,
+            authentication.publicKey,
+            authentication.publicKeyExpiration,
+            authentication.publicKeySignature,
+            authentication.challenge,
+            authentication.challengeExpiration,
+            authentication.challengeSignature
         );
         this.applyTokens(accessRefreshToken);
     }
