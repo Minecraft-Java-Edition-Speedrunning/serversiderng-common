@@ -1,11 +1,11 @@
 package auth;
 
-public record YggdrasilAuthentication(
+public record YggdrasilAuthentication (
         String uuid,
-        String challenge,
-        String response,
         String publicKey,
-        String signature,
-        String instant
-) {
-}
+        Long publicKeyExpiration,
+        String publicKeySignature,
+        String challenge,
+        Long challengeExpiration,
+        String challengeSignature
+) {}
