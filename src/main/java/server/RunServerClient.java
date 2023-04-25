@@ -1,8 +1,6 @@
 package server;
 
-import model.RandomBlock;
-import model.Timebox;
-import model.TokenResponse;
+import model.*;
 
 public class RunServerClient {
     String runToken;
@@ -13,9 +11,9 @@ public class RunServerClient {
         this.runToken = runToken;
     }
     public TokenResponse<RandomBlock> getRandom(Long block) {
-        return serverClient.getRandom(runToken, block);
+        return serverClient.getRandom(new RunForm<>(runToken, new RandomBlockForm(block)));
     }
     public TokenResponse<Timebox> timeboxRun(String hash, String cause) {
-        return serverClient.timeboxRun(runToken, hash, cause);
+        return serverClient.timeboxRun(new RunForm<>(runToken, new TimeboxForm(hash, cause)));
     }
 }

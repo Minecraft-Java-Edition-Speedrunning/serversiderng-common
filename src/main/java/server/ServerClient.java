@@ -4,18 +4,14 @@ package server;
 import auth.AccessRefreshTokenProvider;
 import client.RefreshTokenStore;
 import auth.YggdrasilAuthentication;
-import model.RandomBlock;
-import model.RunStart;
-import model.Timebox;
-import model.TokenResponse;
+import model.*;
 
 public class ServerClient {
     private final ServerInterface serverInterface;
     private final AccessRefreshTokenProvider accessRefreshToken;
 
-    public ServerClient(RefreshTokenStore refreshTokenStore, YggdrasilAuthentication authentication) {
-        // TODO: figure out how serverClient is getting initiated
-        serverInterface = null;
+    public ServerClient(String host, RefreshTokenStore refreshTokenStore, YggdrasilAuthentication authentication) {
+        serverInterface = new ServerInterface(host);
         this.accessRefreshToken = new AccessRefreshTokenProvider(serverInterface, refreshTokenStore, authentication);
     }
 
@@ -27,10 +23,10 @@ public class ServerClient {
     public TokenResponse<RunStart> startRun(String seed) {
         return serverInterface.startRun(getAuthorisation(), seed);
     }
-    public TokenResponse<RandomBlock> getRandom(String runToken, Long block) {
-        return serverInterface.getRandom(getAuthorisation(), runToken, block);
+    public TokenResponse<RandomBlock> getRandom(RunForm<RandomBlockForm> randomBlockForm) {
+        return serverInterface.getRandom(getAuthorisation(), randomBlockForm);
     }
-    public TokenResponse<Timebox> timeboxRun(String runToken, String hash, String cause) {
-        return serverInterface.timeboxRun(getAuthorisation(), runToken, hash, cause);
+    public TokenResponse<Timebox> timeboxRun(RunForm<TimeboxForm> timeboxForm) {
+        return serverInterface.timeboxRun(getAuthorisation(), timeboxForm);
     }
 }

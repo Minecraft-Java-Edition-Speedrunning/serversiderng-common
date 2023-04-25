@@ -13,7 +13,7 @@ public class RunManager<T extends RandomType> {
 
     @SuppressWarnings("unused")
     public RunManager(RefreshTokenStore refreshTokenStore, EventTokenLogger eventTokenLogger, YggdrasilAuthentication authentication) {
-        this.serverClient = new ServerClient(refreshTokenStore, authentication);
+        this.serverClient = new ServerClient("localhost:8080", refreshTokenStore, authentication);
         this.eventTokenLogger = eventTokenLogger;
     }
 

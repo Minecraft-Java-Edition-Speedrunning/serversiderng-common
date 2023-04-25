@@ -1,10 +1,10 @@
 package auth;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 public record AccessRefreshToken(
         String refreshToken,
         String accessToken,
-        LocalDateTime expiresAt
+        Instant expiresAt
 ) {
 }

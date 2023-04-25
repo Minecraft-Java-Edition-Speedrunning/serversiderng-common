@@ -5,7 +5,6 @@ import server.ServerInterface;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -23,7 +22,7 @@ public class AccessRefreshTokenProvider {
     private final RefreshTokenStore refreshTokenStore;
     private String refreshToken;
     private String accessToken;
-    private LocalDateTime expiresAt;
+    private Instant expiresAt;
 
 
     public AccessRefreshTokenProvider(ServerInterface serverClient, RefreshTokenStore refreshTokenStore, YggdrasilAuthentication authentication) {
@@ -40,31 +39,28 @@ public class AccessRefreshTokenProvider {
         this.refreshTokenStore = refreshTokenStore;
         this.refreshToken = refreshTokenStore.getRefreshToken();
         if (this.refreshToken != null) {
-            refresh();
-            // TODO: error handling if refresh token is invalidated at this point
-//            authenticate.accept(this);
+            boolean success = refresh();
+            if (!success) {
+                authenticate.accept(this);
+            }
         } else {
             authenticate.accept(this);
         }
     }
 
     private void authenticateYggdrasil(YggdrasilAuthentication authentication) {
-        AccessRefreshToken accessRefreshToken = serverClient.authenticateYggdrasil(
-            authentication.uuid,
-            authentication.publicKey,
-            authentication.publicKeyExpiration,
-            authentication.publicKeySignature,
-            authentication.challenge,
-            authentication.challengeExpiration,
-            authentication.challengeSignature
-        );
+        AccessRefreshToken accessRefreshToken = serverClient.authenticateYggdrasil(authentication);
         this.applyTokens(accessRefreshToken);
     }
 
-    private void refresh() {
+    private boolean refresh() {
         assert refreshToken != null;
         AccessRefreshToken accessRefreshToken = serverClient.refresh(refreshToken);
+        if (accessRefreshToken == null) {
+            return false;
+        }
         this.applyTokens(accessRefreshToken);
+        return true;
     }
 
     private void applyTokens(AccessRefreshToken tokens) {
@@ -84,7 +80,7 @@ public class AccessRefreshTokenProvider {
     }
 
     public boolean isPresent() {
-        return accessToken != null && expiresAt.isAfter(LocalDateTime.now());
+        return accessToken != null && expiresAt.isAfter(Instant.now());
     }
 
     public <T> T flatMap(Function<String, T> consumer) {
