@@ -10,10 +10,11 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class RandomSource<T extends RandomType> {
     public final RandomBlock block;
-    private final Map<T, Random> sources;
+    private final Map<T, GameRandom> sources;
 
     public RandomSource(RandomBlock block, Map<T, Long> calls) {
         this.block = block;
@@ -21,7 +22,7 @@ public class RandomSource<T extends RandomType> {
         calls.forEach((eventType, eventCalls) -> sources.put(eventType, this.createRandom(eventType, eventCalls)));
     }
 
-    private Random createRandom(T eventType, Long calls) {
+    private GameRandom createRandom(T eventType, Long calls) {
         try {
             byte[] parts = Base64.getDecoder().decode(block.seed());
             MessageDigest digest = MessageDigest.getInstance(block.hashAlgorithm());
@@ -38,5 +39,15 @@ public class RandomSource<T extends RandomType> {
 
     public Random getRandom(T eventType) {
         return this.sources.computeIfAbsent(eventType, (type) -> createRandom(type, 0L));
+    }
+
+    public Map<T, Long> exportCalls() {
+        return this.sources.entrySet().stream()
+            .collect(
+                Collectors.toMap(
+                    Map.Entry::getKey,
+                    (entry) -> entry.getValue().getCalls()
+                )
+            );
     }
 }

@@ -91,4 +91,12 @@ public class Run<T extends RandomType> {
     public TokenResponse<Timebox> timebox(String hash, String cause) {
         return this.serverClient.timeboxRun(hash, cause);
     }
+
+    @SuppressWarnings("unused")
+    public SavedRandom<T> exportRandom() {
+        return new SavedRandom<>(
+            activeSource.block,
+            activeSource.exportCalls()
+        );
+    }
 }
