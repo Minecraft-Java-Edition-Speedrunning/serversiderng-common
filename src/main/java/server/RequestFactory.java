@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import java.io.*;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -125,12 +124,9 @@ public class RequestFactory {
         throw new IOException(status + ": " + httpURLConnection.getResponseMessage());
     }
 
-    public <T> T request() throws IOException {
+    public <T> T request(TypeToken<T> type) throws IOException {
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.rawRequest()))) {
-            Type type = new TypeToken<T>() {
-            }.getType();
-            if (type == new TypeToken<String>() {
-            }.getType()) {
+            if (type.getType() == new TypeToken<String>() {}.getType()) {
                 String inputLine;
                 StringBuilder response = new StringBuilder();
                 while ((inputLine = bufferedReader.readLine()) != null) {
@@ -138,8 +134,8 @@ public class RequestFactory {
                 }
                 return (T) response.toString();
             }
-            JsonReader reader = new JsonReader(bufferedReader);
 
+            JsonReader reader = new JsonReader(bufferedReader);
             return new Gson().fromJson(reader, type);
         }
     }

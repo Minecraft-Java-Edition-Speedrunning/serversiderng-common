@@ -18,7 +18,7 @@ public class RandomSource<T extends RandomType> {
     public RandomSource(RandomBlock block, Map<T, Long> calls) {
         this.block = block;
         this.sources = new HashMap<>();
-        calls.forEach(this::createRandom);
+        calls.forEach((eventType, eventCalls) -> sources.put(eventType, this.createRandom(eventType, eventCalls)));
     }
 
     private Random createRandom(T eventType, Long calls) {
@@ -30,7 +30,7 @@ public class RandomSource<T extends RandomType> {
             }
             Long seed = ByteBuffer.wrap(digest.digest()).getLong();
 
-            return sources.put(eventType, new GameRandom(seed, calls));
+            return new GameRandom(seed, calls);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }

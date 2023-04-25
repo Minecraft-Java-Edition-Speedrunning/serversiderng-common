@@ -66,15 +66,16 @@ public class AccessRefreshTokenProvider {
     private void applyTokens(AccessRefreshToken tokens) {
         this.refreshToken = tokens.refreshToken();
         this.accessToken = tokens.accessToken();
-        this.expiresAt = tokens.expiresAt();
+        this.expiresAt = Instant.ofEpochMilli(tokens.expiresAt());
         this.refreshTokenStore.saveRefreshToken(this.refreshToken);
 
         if (scheduledRefresh != null) {
             scheduledRefresh.cancel(false);
         }
+
         scheduledRefresh = scheduler.schedule(
             this::refresh,
-            Math.max(0, Duration.between(this.expiresAt, Instant.now()).toMillis() - PREFETCH_MILLISECONDS),
+            Math.max(0, Duration.between(Instant.now(), this.expiresAt).toMillis() - PREFETCH_MILLISECONDS),
             TimeUnit.MILLISECONDS
         );
     }

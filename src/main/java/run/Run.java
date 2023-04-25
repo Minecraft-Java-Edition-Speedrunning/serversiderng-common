@@ -11,7 +11,6 @@ import server.ServerClient;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
@@ -42,7 +41,7 @@ public class Run<T extends RandomType> {
     }
 
     private Long getActiveBlockIndex() {
-        return Duration.between(runStart.startTime(), Instant.now()).toMillis() / runStart.blockSize();
+        return Duration.between(Instant.ofEpochMilli(runStart.startTime()), Instant.now()).toMillis() / runStart.blockSize();
     }
 
     private TokenResponse<RandomBlock> fetchBlock(Long block) {
@@ -52,7 +51,7 @@ public class Run<T extends RandomType> {
     }
 
     private TokenResponse<RandomBlock> getBlock(Long block) {
-        if (Objects.equals(this.nextBlock.data().block(), block)) {
+        if (this.nextBlock != null && Objects.equals(this.nextBlock.data().block(), block)) {
             return this.nextBlock;
         }
         return fetchBlock(block);
@@ -65,7 +64,7 @@ public class Run<T extends RandomType> {
         if (savedRandom != null) {
             this.activeSource = new RandomSource<>(savedRandom.block(), savedRandom.calls());
         }
-        long initDelay = runStart.blockSize() - (Duration.between(runStart.startTime(), LocalDateTime.now()).toMillis() % runStart.blockSize());
+        long initDelay = runStart.blockSize() - (Duration.between(Instant.ofEpochMilli(runStart.startTime()), Instant.now()).toMillis() % runStart.blockSize());
         scheduler.scheduleAtFixedRate(() -> {
             long nextBlock = getActiveBlockIndex() + 1;
             this.nextBlock = fetchBlock(nextBlock);
@@ -74,7 +73,7 @@ public class Run<T extends RandomType> {
 
     private RandomSource<T> getActiveBlock() {
         Long activeBlock = this.getActiveBlockIndex();
-        while (!Objects.equals(this.activeSource.block.block(), activeBlock)) {
+        while (this.activeSource == null || !Objects.equals(this.activeSource.block.block(), activeBlock)) {
             TokenResponse<RandomBlock> block = getBlock(activeBlock);
             this.activeSource = new RandomSource<>(block.data(), new HashMap<>());
             activeBlock = this.getActiveBlockIndex();

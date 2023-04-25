@@ -2,6 +2,7 @@ package server;
 
 import auth.AccessRefreshToken;
 import auth.YggdrasilAuthentication;
+import com.google.gson.reflect.TypeToken;
 import model.RandomBlock;
 import model.RandomBlockForm;
 import model.RunForm;
@@ -25,7 +26,7 @@ public class ServerInterface {
                 .endpoint("/authentication/yggdrasil")
                 .method("POST")
                 .body(authentication)
-                .request();
+                .request(new TypeToken<>() {});
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -37,7 +38,8 @@ public class ServerInterface {
                 .endpoint("/authentication/refresh")
                 .method("POST")
                 .body(refreshToken)
-                .request();
+                .header("Content-Type", "text/plain; charset=utf-8")
+                .request(new TypeToken<>() {});
         } catch (IOException e) {
             return null;
         }
@@ -53,7 +55,7 @@ public class ServerInterface {
                 .method("POST")
                 .queryParam("seed", seed)
                 .header("Authorization", authorization)
-                .request();
+                .request(new TypeToken<>() {});
         } catch (IOException e) {
             return null;
         }
@@ -68,7 +70,7 @@ public class ServerInterface {
                     .method("POST")
                     .body(randomBlockForm)
                     .header("Authorization", authorization)
-                    .request();
+                    .request(new TypeToken<>() {});
         } catch (IOException e) {
             return null;
         }
@@ -83,7 +85,7 @@ public class ServerInterface {
                     .method("POST")
                     .body(timeboxForm)
                     .header("Authorization", authorization)
-                    .request();
+                    .request(new TypeToken<>() {});
         } catch (IOException e) {
             return null;
         }

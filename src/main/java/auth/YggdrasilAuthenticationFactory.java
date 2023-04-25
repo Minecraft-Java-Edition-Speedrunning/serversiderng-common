@@ -8,13 +8,6 @@ import java.time.Instant;
 import java.util.Base64;
 import java.util.UUID;
 
-record YggdrasilKeyPair (
-    String publicKeySignature,
-    long expiresAt,
-    String privateKey,
-    String publicKey
-) {}
-
 public class YggdrasilAuthenticationFactory {
     UUID uuid;
     YggdrasilKeyPair keyPair;
@@ -57,7 +50,7 @@ public class YggdrasilAuthenticationFactory {
 
             PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
 
-            Signature signature = Signature.getInstance("RSA-SHA1");
+            Signature signature = Signature.getInstance("SHA1withRSA");
             signature.initSign(privateKey);
             signature.update(challengeBytes);
             signature.update(challengeExpirationBytes);
